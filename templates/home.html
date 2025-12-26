@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SecureOne</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        background: linear-gradient(135deg,
+            #1b1e4f 0%,
+            #2f34a3 25%,
+            #6f6cc7 55%,
+            #b8b6e6 75%,
+            #d9d8f0 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Top bar */
+    .top-bar {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 30px;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Buttons */
+    .auth-buttons {
+        position: absolute;
+        top: 25px;
+        right: 40px;
+        display: flex;
+        gap: 20px;
+    }
+
+    .auth-buttons a {
+        padding: 12px 32px;
+        border-radius: 25px;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        letter-spacing: 0.5px;
+    }
+
+    .register {
+        background: linear-gradient(45deg, #FFD700, #FFA500);
+        color: #1b1e4f;
+        border: 2px solid #FFD700;
+    }
+
+    .register:hover {
+        background: linear-gradient(45deg, #FFA500, #FF8C00);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+    }
+
+    .login {
+        background: linear-gradient(45deg, #ffffff, #f0f0f0);
+        color: #2f34a3;
+        border: 2px solid #ffffff;
+    }
+
+    .login:hover {
+        background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Dotted pattern */
+    .dots {
+        position: absolute;
+        left: 60px;
+        top: 280px;
+        width: 350px;
+        height: 220px;
+        background-image: radial-gradient(white 1.5px, transparent 1.5px);
+        background-size: 18px 18px;
+        opacity: 0.8;
+    }
+
+    /* Main text */
+    .title {
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #e0cf4a;
+        font-size: 48px;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Features Section */
+    .features {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 40px;
+        color: white;
+    }
+
+    .feature-item {
+        text-align: center;
+        max-width: 200px;
+    }
+
+    .feature-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .feature-text {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    /* Footer */
+    .footer {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        opacity: 0.7;
+        font-size: 12px;
+    }
+</style>
+</head>
+<body>
+
+    <div class="top-bar"></div>
+
+    <div class="auth-buttons">
+        <a href="/register" class="register">🚀 REGISTER</a>
+        <a href="/login" class="login">🔐 LOGIN</a>
+    </div>
+
+    <div class="dots"></div>
+
+    <div class="title">Welcome to SecureOne</div>
+
+    <div class="features">
+        <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-text">Secure Cloud Storage</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">Fast Upload & Download</div>
+        </div>
+        <div class="feature-item">
+            <div class="feature-icon">📱</div>
+            <div class="feature-text">Access Anywhere</div>
+        </div>
+    </div>
+
+    <div class="footer">© 2025 SecureOne. All rights reserved.</div>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial;
+        }
+
+        body {
+            background: #f5f5f5;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: blue;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* User name with dropdown */
+        .user-name-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-name {
+            font-weight: bold;
+            padding: 8px 15px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 200px;
+            display: none;
+            z-index: 1000;
+            margin-top: 5px;
+        }
+
+        .user-name-container:hover .user-dropdown {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+            color: red;
+        }
+
+        /* Main Content */
+        .container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .storage-box {
+            background: #e8f0fe;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .storage-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .storage-used {
+            font-size: 24px;
+            font-weight: bold;
+            color: blue;
+            margin-bottom: 5px;
+        }
+
+        /* Files Section */
+        .files-section {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-btn {
+            background: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Files List */
+        .files-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .file-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .file-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .file-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .file-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            word-break: break-word;
+            cursor: pointer;
+            color: #0066cc;
+            text-decoration: underline;
+        }
+
+        .file-size {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+            background: green;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+        }
+
+        /* DELETE BUTTON */
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .delete-btn:hover {
+            background: darkred;
+        }
+
+        /* No Files */
+        .no-files {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        /* Flash messages */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="logo">SecureOne</div>
+    <div class="user-info">
+        <!-- User name with dropdown -->
+        <div class="user-name-container">
+            <div class="user-name">
+                {{ user_name }}
+                <span style="font-size: 12px;">▼</span>
+            </div>
+            
+            <!-- Dropdown menu -->
+            <div class="user-dropdown">
+                <a href="/profile" class="dropdown-item">
+                    My Profile
+                </a>
+                <a href="/dashboard" class="dropdown-item">
+                    My Files
+                </a>
+                <a href="/logout" class="dropdown-item">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Storage Status</h3>
+        
+        <div class="storage-box">
+            <div class="storage-title">Storage Used</div>
+            <div class="storage-used">{{ total_storage_mb }} MB</div>
+            <div style="font-size: 14px; color: #666;">
+                {{ total_files }} files • 1 GB Total
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <h4>Quick Stats</h4>
+            <div style="margin-top: 10px; font-size: 14px; color: #666;">
+                <div style="padding: 8px; border-bottom: 1px solid #eee;">
+                    Total Files: {{ total_files }}
+                </div>
+                <div style="padding: 8px; border-bottom: 1px solid #eee;">
+                    Storage Used: {{ total_storage_mb }} MB
+                </div>
+                <div style="padding: 8px;">
+                    Free Space: {{ 1024 - total_storage_mb|float }} MB
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Files Section -->
+    <div class="files-section">
+        <div class="section-header">
+            <h2>My Files</h2>
+            
+            <!-- Upload Form -->
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <input type="file" name="file" id="fileInput" style="display: none;" onchange="this.form.submit()">
+                <button type="button" class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                    Upload File
+                </button>
+            </form>
+        </div>
+        
+        <!-- Flash Messages -->
+        <div class="flash-messages">
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        
+        <!-- Files List -->
+        <div class="files-list">
+            {% if files %}
+                {% for file in files %}
+                <!-- FILE CARD -->
+                <div class="file-card">
+                    <div class="file-icon">
+                        {% set file_ext = file.original_name.split('.')[-1].lower() if '.' in file.original_name else 'file' %}
+                        {% if file_ext in ['jpg', 'jpeg', 'png', 'gif'] %}
+                            <div style="width: 40px; height: 40px; background: #ff6b6b; color: white; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 0 auto;">
+                                IMG
+                            </div>
+                        {% elif file_ext == 'pdf' %}
+                            <div style="width: 40px; height: 40px; background: #ff4444; color: white; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 0 auto;">
+                                PDF
+                            </div>
+                        {% elif file_ext in ['doc', 'docx'] %}
+                            <div style="width: 40px; height: 40px; background: #2b579a; color: white; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 0 auto;">
+                                DOC
+                            </div>
+                        {% elif file_ext in ['mp4', 'avi', 'mov'] %}
+                            <div style="width: 40px; height: 40px; background: #ff6b6b; color: white; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 0 auto;">
+                                VID
+                            </div>
+                        {% elif file_ext in ['mp3', 'wav'] %}
+                            <div style="width: 40px; height: 40px; background: #4CAF50; color: white; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 0 auto;">
+                                AUD
+                            </div>
+                        {% elif file_ext in ['zip', 'rar'] %}
+                            <div style="width: 40px; height: 40px; background: #FF9800; color: white; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 0 auto;">
+                                ZIP
+                            </div>
+                        {% else %}
+                            <div style="width: 40px; height: 40px; background: #666; color: white; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 0 auto;">
+                                {{ file_ext[:3]|upper if file_ext|length >= 3 else 'FILE' }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- FILE NAME - CLICKABLE FOR DOWNLOAD -->
+                    <div class="file-name" onclick="window.location.href='/download/{{ file.file_id }}'">
+                        {{ file.original_name[:20] }}
+                        {% if file.original_name|length > 20 %}...{% endif %}
+                    </div>
+                    
+                    <div class="file-size">
+                        {% if file.file_size %}
+                            {% if file.file_size < 1024 %}
+                                {{ file.file_size }} B
+                            {% elif file.file_size < 1048576 %}
+                                {{ (file.file_size / 1024) | round(2) }} KB
+                            {% else %}
+                                {{ (file.file_size / 1048576) | round(2) }} MB
+                            {% endif %}
+                        {% else %}
+                        0 KB
+                        {% endif %}
+                    </div>
+                    
+                    <!-- ACTION BUTTONS -->
+                    <div style="margin-top: 10px;">
+                        <a href="/download/{{ file.file_id }}" class="download-btn">
+                            Download
+                        </a>
+                        
+                        <form method="POST" action="/delete_file/{{ file.file_id }}" 
+                              style="display: inline;"
+                              onsubmit="return confirm('Delete {{ file.original_name[:20] }}?');">
+                            <button type="submit" class="delete-btn">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-files" style="grid-column: 1 / -1;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">📁</div>
+                    <div style="font-size: 20px; margin-bottom: 10px;">No files yet</div>
+                    <div style="margin-bottom: 20px;">Upload your first file to get started</div>
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        Upload First File
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
